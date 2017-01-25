@@ -46,7 +46,10 @@ class BookInstanceAdmin(admin.ModelAdmin):
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'books_in_genre')
+
+    def books_in_genre(self, obj):
+        return obj.book_set.all().count()
 
 
 @admin.register(Language)
