@@ -1,0 +1,6 @@
+*.sql
+*.sqlite3
+.*.swp
+*.pyc
+.idea/*
+__pycache__/*
