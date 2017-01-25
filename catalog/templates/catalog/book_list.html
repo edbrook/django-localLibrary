@@ -6,7 +6,14 @@
     <h1>Every Book in the Library!</h1>
     <ul>
     {% for book in book_list %}
-        <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{ book.author }})</li>
+        <li>
+            <span class="lead"><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></span>
+            [<a href="{% url 'catalog:author-detail' book.author.id %}">{{ book.author }}</a>
+                (<span class="available">{{ book.available }}</span>/<!--
+                --><span class="reserved">{{ book.reserved }}</span>/<!--
+                --><span class="onloan">{{ book.onloan }}</span>/<!--
+                --><span class="maintenance">{{ book.maintenance }}</span>)]
+        </li>
     {% empty %}
         <li><code>--== There are no books in the library! ==--</code></li>
     {% endfor %}

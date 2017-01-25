@@ -7,8 +7,8 @@
     <ul>
     {% for author in author_list %}
         <li>
-            <a href="{{ author.get_absolute_url }}">{{ author }}
-            ({{ author.date_of_birth }} - {{ author.date_of_death }})</a>
+            <span class="lead"><a href="{{ author.get_absolute_url }}">{{ author }}</a></span>
+            ({{ author.date_of_birth }} - {{ author.date_of_death }})
         </li>
     {% empty %}
         <li><code>--== No authors to show you! ==--</code></li>

@@ -38,7 +38,13 @@ def author(request, pk=None):
 
 class BookListView(ListView):
     model = Book
-    paginate_by = 5
+    paginate_by = 10
+    queryset = Book.objects.annotate(
+            total=Count('id'),
+            available=Count(Case(When(bookinstance__status=BookInstance.AVAILABLE, then=1))),
+            reserved=Count(Case(When(bookinstance__status=BookInstance.RESERVED, then=1))),
+            onloan=Count(Case(When(bookinstance__status=BookInstance.ON_LOAN, then=1))),
+            maintenance=Count(Case(When(bookinstance__status=BookInstance.MAINTENANCE, then=1))))
 
 
 class BookDetailView(DetailView):

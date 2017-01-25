@@ -10,11 +10,10 @@
     <div class="indent">
         <strong class="lead">
             <a href="{{ book.get_absolute_url }}" class="dosis">{{ book.title }}</a>
-            ({{ book.total }})
+            (<span class="available">{{ book.available }}</span>)
         </strong>
         <strong>
-            (<span class="available">{{ book.available }}</span>/<!--
-            --><span class="reserved">{{ book.reserved }}</span>/<!--
+            (<span class="reserved">{{ book.reserved }}</span>/<!--
             --><span class="onloan">{{ book.onloan }}</span>/<!--
             --><span class="maintenance">{{ book.maintenance }}</span>)
         </strong>
