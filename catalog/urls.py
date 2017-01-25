@@ -5,8 +5,8 @@ app_name = 'catalog'
 
 urlpatterns = [
     url(r'^$', views.index, name="index"),
-    url(r'^books/$', views.book, name="books_list"),
-    url(r'^authors/$', views.author, name="authors_list"),
-    url(r'^books/(?P<pk>\d{1,6})$', views.book, name="book_detail"),
-    url(r'^authors/(?P<pk>\d{1,6})$', views.author, name="author_detail"),
+    url(r'^books/$', views.BookListView.as_view(), name="books-list"),
+    url(r'^authors/$', views.AuthorListView.as_view(), name="authors-list"),
+    url(r'^book/(?P<pk>\d{1,6})$', views.BookDetailView.as_view(), name="book-detail"),
+    url(r'^author/(?P<pk>\d{1,6})$', views.AuthorDetailView.as_view(), name="author-detail"),
 ]

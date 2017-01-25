@@ -1,0 +1,20 @@
+{% extends "catalog/layouts/base_generic.html" %}
+
+{% block title %}{{ author.last_name }}, {{ author.first_name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ author.first_name }} {{ author.last_name }}</h1>
+    <h5>{{ author.date_of_birth }} - {{ author.date_of_death }}</h5>
+    <h2>Books</h2>
+    {% for book in author.book_set.all %}
+    <div class="indent">
+        <strong class="lead">
+            <a href="{{ book.get_absolute_url }}" class="dosis">{{ book.title }}</a>
+            ({{ book.get_instance_count }})
+        </strong>
+        <p>{{ book.summary }}</p>
+    </div>
+    {% empty %}
+        <p class="text-warning">No books!</p>
+    {% endfor %}
+{% endblock %}

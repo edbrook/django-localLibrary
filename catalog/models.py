@@ -54,6 +54,9 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('catalog:book-detail', args=[str(self.id)])
 
+    def get_instance_count(self):
+        return self.bookinstance_set.count()
+
     def __str__(self):
         return self.title
 

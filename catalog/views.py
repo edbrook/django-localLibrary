@@ -1,5 +1,7 @@
+from django.views.generic import ListView, DetailView
 from django.shortcuts import render
 from django.http.response import HttpResponse
+from django.db.models import Count
 
 from .models import Author, Book, BookInstance, Genre
 
@@ -11,9 +13,9 @@ def index(request):
         status__exact=BookInstance.AVAILABLE).count()
     num_authors = Author.objects.all().count()
     num_genres = Genre.objects.all().count()
-    num_titles_with_the = Book.objects.filter(title__icontains='the').count()
+    num_titles_with_the = Book.objects.filter(title__icontains='the ').count()
 
-    return render(request, 'index.html', context={
+    return render(request, 'catalog/index.html', context={
         'num_books': num_books,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
@@ -32,3 +34,21 @@ def author(request, pk=None):
     if pk is None:
         return HttpResponse(content='AUTHOR_LIST')
     return HttpResponse(content='AUTHOR_DETAIL')
+
+
+class BookListView(ListView):
+    model = Book
+    paginate_by = 5
+
+
+class BookDetailView(DetailView):
+    model = Book
+
+
+class AuthorListView(ListView):
+    model = Author
+    queryset = Author.objects.annotate(num_books=Count('book')).all()
+
+
+class AuthorDetailView(DetailView):
+    model = Author

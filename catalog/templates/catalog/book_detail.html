@@ -1,0 +1,43 @@
+{% extends "catalog/layouts/base_generic.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ book.title }}</h1>
+    <table class="table">
+    <tr>
+        <th>Author:</th>
+        <td><a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a></td>
+    </tr>
+    <tr>
+        <th>Summary:</th>
+        <td><p>{{ book.summary }}</p></td>
+    </tr>
+    <tr>
+        <th>Genres:</th>
+        <td>{% for genre in book.genre.all %}{{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+    </tr>
+    <tr>
+        <th>Language:</th>
+        <td>{{ book.language }}</td>
+    </tr>
+    <tr>
+        <th>ISBN:</th>
+        <td>{{ book.isbn }}</td>
+    </tr>
+    <tr>
+        <th>Copies</th>
+        <td>
+            {% for copy in book.bookinstance_set.all %}
+                <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'l' %}text-danger{% else %}text-warning{% endif %}"><strong>{{ copy.get_status_display|title }}</strong></p>
+            {% if copy.status == 'l' %}<p><strong>Due to be returned:</strong> {{copy.due_back}}</p>{% endif %}
+            <p><strong>Imprint:</strong> {{copy.imprint}}</p>
+            <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
+            {% if not forloop.last %}<hr>{% endif %}
+            {% empty %}
+                No Copies Available
+            {% endfor %}
+        </td>
+    </tr>
+    </table>
+{% endblock %}
