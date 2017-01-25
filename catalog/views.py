@@ -15,13 +15,17 @@ def index(request):
     num_genres = Genre.objects.all().count()
     num_titles_with_the = Book.objects.filter(title__icontains='the ').count()
 
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
     return render(request, 'catalog/index.html', context={
         'num_books': num_books,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
         'num_authors': num_authors,
         'num_genres': num_genres,
-        'num_titles_with_the': num_titles_with_the})
+        'num_titles_with_the': num_titles_with_the,
+        'num_visits': num_visits})
 
 
 def book(request, pk=None):
