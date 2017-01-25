@@ -28,3 +28,19 @@ td p {
     margin-left:30px;
     margin-right:30px;
 }
+
+.available {
+    color: green;
+}
+
+.onloan {
+    color:red;
+}
+
+.reserved {
+    color:darkorange;
+}
+
+.maintenance {
+    color:blue;
+}

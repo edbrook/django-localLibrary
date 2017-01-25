@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render
 from django.http.response import HttpResponse
-from django.db.models import Count
+from django.db.models import Case, Count, When
 
 from .models import Author, Book, BookInstance, Genre
 
@@ -52,3 +52,15 @@ class AuthorListView(ListView):
 
 class AuthorDetailView(DetailView):
     model = Author
+
+    def get_context_data(self, **kwargs):
+        ctx = super(AuthorDetailView, self).get_context_data(**kwargs)
+        books = ctx['author'].book_set.annotate(
+            total=Count('bookinstance'),
+            available=Count(Case(When(bookinstance__status=BookInstance.AVAILABLE, then=1))),
+            reserved=Count(Case(When(bookinstance__status=BookInstance.RESERVED, then=1))),
+            onloan=Count(Case(When(bookinstance__status=BookInstance.ON_LOAN, then=1))),
+            maintenance=Count(Case(When(bookinstance__status=BookInstance.MAINTENANCE, then=1))))
+        ctx['books'] = books
+        return ctx
+

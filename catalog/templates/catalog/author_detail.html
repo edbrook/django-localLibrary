@@ -6,11 +6,17 @@
     <h1>{{ author.first_name }} {{ author.last_name }}</h1>
     <h5>{{ author.date_of_birth }} - {{ author.date_of_death }}</h5>
     <h2>Books</h2>
-    {% for book in author.book_set.all %}
+    {% for book in books %}
     <div class="indent">
         <strong class="lead">
             <a href="{{ book.get_absolute_url }}" class="dosis">{{ book.title }}</a>
-            ({{ book.get_instance_count }})
+            ({{ book.total }})
+        </strong>
+        <strong>
+            (<span class="available">{{ book.available }}</span>/<!--
+            --><span class="reserved">{{ book.reserved }}</span>/<!--
+            --><span class="onloan">{{ book.onloan }}</span>/<!--
+            --><span class="maintenance">{{ book.maintenance }}</span>)
         </strong>
         <p>{{ book.summary }}</p>
     </div>
