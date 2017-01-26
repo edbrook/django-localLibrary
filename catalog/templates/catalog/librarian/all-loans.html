@@ -23,8 +23,10 @@
             {% elif bookinst.due_soon %}
                 <strong class="text-warning">Due soon</strong>
             {% else %}
-                <span class="text-success">-</span>
-            {% endif %}</td>
+                <span class="text-success">OK</span>
+            {% endif %}
+                <a href="{% url 'catalog:renew-book-librarian' bookinst.id %}">(renew)</a>
+            </td>
         </tr>
     {% empty %}
         <tr><td colspan="2" class="text-center"><code>--== No books on loan! ==--</code></td></tr>

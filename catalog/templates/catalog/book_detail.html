@@ -28,18 +28,48 @@
     <tr>
         <th>Copies</th>
         <td>
+            <table class="table">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Imprint</th>
+                <th>Id</th>
+                {% if perms.catalog.can_mark_returned %}
+                <th>Renew?</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
             {% for copy in book.bookinstance_set.all %}
-                <p class="{% if copy.status == 'a' %}available{% elif copy.status == 'l' %}onloan{% elif copy.status == 'r' %}reserved{% else %}maintenance{% endif %}"><strong>{{ copy.get_status_display|title }}</strong></p>
-            {% if copy.status == 'l' %}
-                <p><strong>Due to be returned:</strong> {{copy.due_back}}
-                {% if copy.is_overdue %}<strong class="text-danger">OVERDUE</strong>{% endif %}</p>
-            {% endif %}
-            <p><strong>Imprint:</strong> {{copy.imprint}}</p>
-            <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
-            {% if not forloop.last %}<hr>{% endif %}
+            <tr>
+                <td><p class="{% if copy.status == 'a' %}available{% elif copy.status == 'l' %}onloan{% elif copy.status == 'r' %}reserved{% else %}maintenance{% endif %}">
+                    <strong>{{ copy.get_status_display|title }}</strong></td>
+                <td>
+                    {% if copy.status == 'l' %}
+                        {{copy.due_back}}
+                        {% if copy.is_overdue %}<strong class="text-danger">OVERDUE</strong>{% endif %}
+                    {% else %}
+                        n/a
+                    {% endif %}
+                </td>
+                <td>{{copy.imprint}}</td>
+                <td>{{copy.id}}</td>
+                {% if perms.catalog.can_mark_returned %}
+                <td>
+                    {% if copy.status == 'l' %}
+                        <a href="{% url 'catalog:renew-book-librarian' copy.id %}">(renew)</a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
             {% empty %}
                 No Copies Available
             {% endfor %}
+            </tbody>
+            </table>
         </td>
     </tr>
     </table>
