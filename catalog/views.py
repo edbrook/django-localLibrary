@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Case, Count, When
 from django.http.response import HttpResponse
 from django.shortcuts import render
@@ -87,3 +87,16 @@ class LoanedBooksByUserListView(LoginRequiredMixin, ListView):
             .filter(borrower=self.request.user)\
             .filter(status__exact=BookInstance.ON_LOAN)\
             .order_by('due_back')
+
+
+class AllLoanedBooks(PermissionRequiredMixin, ListView):
+    permission_required = 'catalog.can_mark_returned'
+    model = BookInstance
+    paginate_by = 10
+    template_name = 'catalog/librarian/all-loans.html'
+    context_object_name = 'loan_list'
+
+    def get_queryset(self):
+        return BookInstance.objects\
+            .filter(status__exact=BookInstance.ON_LOAN)\
+            .order_by('due_back', 'borrower__id')
