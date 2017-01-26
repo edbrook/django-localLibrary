@@ -1,0 +1,25 @@
+{% extends "catalog/layouts/base.html" %}
+
+{% block title %}All Books{% endblock %}
+
+{% block content %}
+    <h1>All Loaned Books</h1>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Borrower</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    {% for bookinst in loan_list %}
+        <tr>
+            <td><a href="{{ bookinst.book.get_absolute_url }}">{{ bookinst.book.title }}</a></td>
+            <td>{{ bookinst.borrower }}</td>
+            <td>{{ bookinst.due_back }}{% if bookinst.is_overdue %} <strong class="text-danger">OVERDUE</strong>{% endif %}</td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="2" class="text-center"><code>--== No books on loan! ==--</code></td></tr>
+    {% endfor %}
+    </table>
+{% endblock %}
