@@ -1,7 +1,8 @@
-from django.views.generic import ListView, DetailView
-from django.shortcuts import render
-from django.http.response import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Case, Count, When
+from django.http.response import HttpResponse
+from django.shortcuts import render
+from django.views.generic import DetailView, ListView
 
 from .models import Author, Book, BookInstance, Genre
 
@@ -74,3 +75,15 @@ class AuthorDetailView(DetailView):
         ctx['books'] = books
         return ctx
 
+
+class LoanedBooksByUserListView(LoginRequiredMixin, ListView):
+    model = BookInstance
+    paginate_by = 10
+    template_name = 'catalog/borrower/loaned-list.html'
+    context_object_name = 'bookinstance_list'
+
+    def get_queryset(self):
+        return BookInstance.objects\
+            .filter(borrower=self.request.user)\
+            .filter(status__exact=BookInstance.ON_LOAN)\
+            .order_by('due_back')

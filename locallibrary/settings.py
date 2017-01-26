@@ -102,6 +102,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_REDIRECT_URL = '/'
 
+# Admin site settings
+ADMIN_INDEX_TITLE = 'Library management'
+ADMIN_SITE_TITLE = 'Local Library'
+ADMIN_SITE_HEADER = 'Local Library v0.1'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 

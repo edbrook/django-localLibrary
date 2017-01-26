@@ -1,6 +1,9 @@
 import uuid
+from datetime import date
+
 from django.db import models
 from django.shortcuts import reverse
+from django.contrib.auth.models import User
 
 
 class Genre(models.Model):
@@ -76,9 +79,17 @@ class BookInstance(models.Model):
     imprint = models.CharField(max_length=50)
     due_back = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=1, choices=LOAN_STATUS_CHOICES, blank=True, default=MAINTENANCE)
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ['due_back']
+
+    @property
+    def is_overdue(self):
+        return date.today() > self.due_back
+
+    def get_absolute_url(self):
+        return reverse('catalog:book-detail', args=[str(self.book.id)])
 
     def __str__(self):
         return '[{}] {}'.format(self.id, self.book.title)

@@ -1,6 +1,12 @@
+from django.conf import settings
 from django.contrib import admin
 
 from .models import Author, Book, BookInstance, Genre, Language
+
+
+admin.site.index_title = settings.ADMIN_INDEX_TITLE
+admin.site.site_header = settings.ADMIN_SITE_HEADER
+admin.site.site_title = settings.ADMIN_SITE_TITLE
 
 
 class BookInlineAdmin(admin.TabularInline):
@@ -31,24 +37,20 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'display_book_title', 'status', 'due_back')
+    list_display = ('book', 'status', 'borrower', 'due_back', 'id')
     list_filter = ('status', 'due_back')
     fieldsets = (
         (None, {'fields': ('book', 'imprint', 'id')}),
-        ('Availability', {'fields': ('status', 'due_back')}))
+        ('Availability', {'fields': ('status', 'due_back', 'borrower')}))
     search_fields = ['book__title', 'id']
-
-    def display_book_title(self, obj):
-        return obj.book.title
-
-    display_book_title.short_description = 'Book'
 
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('name', 'books_in_genre')
 
-    def books_in_genre(self, obj):
+    @staticmethod
+    def books_in_genre(obj):
         return obj.book_set.all().count()
 
 
