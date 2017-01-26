@@ -10,13 +10,21 @@
             <th>Title</th>
             <th>Borrower</th>
             <th>Due Date</th>
+            <th>Status</th>
         </tr>
     </thead>
     {% for bookinst in loan_list %}
-        <tr>
+        <tr class="{% if bookinst.is_overdue %}danger{% elif bookinst.due_soon %}warning{% else %}{% endif %}">
             <td><a href="{{ bookinst.book.get_absolute_url }}">{{ bookinst.book.title }}</a></td>
             <td>{{ bookinst.borrower }}</td>
-            <td>{{ bookinst.due_back }}{% if bookinst.is_overdue %} <strong class="text-danger">OVERDUE</strong>{% endif %}</td>
+            <td>{{ bookinst.due_back }}</td>
+            <td>{% if bookinst.is_overdue %}
+                <strong class="text-danger">OVERDUE</strong>
+            {% elif bookinst.due_soon %}
+                <strong class="text-warning">Due soon</strong>
+            {% else %}
+                <span class="text-success">-</span>
+            {% endif %}</td>
         </tr>
     {% empty %}
         <tr><td colspan="2" class="text-center"><code>--== No books on loan! ==--</code></td></tr>

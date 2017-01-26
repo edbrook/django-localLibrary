@@ -89,6 +89,11 @@ class BookInstance(models.Model):
     def is_overdue(self):
         return date.today() > self.due_back
 
+    @property
+    def due_soon(self):
+        delta = self.due_back - date.today()
+        return 0 <= delta.days <= 5
+
     def get_absolute_url(self):
         return reverse('catalog:book-detail', args=[str(self.book.id)])
 
