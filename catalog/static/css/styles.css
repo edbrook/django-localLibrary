@@ -29,6 +29,10 @@ td p {
     margin-right:30px;
 }
 
+.list-dbl-space li {
+    margin-top: 20px;
+}
+
 .available {
     color: green;
 }
