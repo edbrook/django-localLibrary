@@ -7,7 +7,7 @@
     <table class="table">
     <tr>
         <th>Author:</th>
-        <td><a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a></td>
+        <td>{% if book.author %}<a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a>{% else %}Unknown{% endif %}</td>
     </tr>
     <tr>
         <th>Summary:</th>
