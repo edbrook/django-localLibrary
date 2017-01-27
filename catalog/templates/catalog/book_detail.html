@@ -28,6 +28,7 @@
     <tr>
         <th>Copies</th>
         <td>
+        {% if book.bookinstance_set.count > 0 %}
             <table class="table">
             <thead>
             <tr>
@@ -65,12 +66,18 @@
                 </td>
                 {% endif %}
             </tr>
-            {% empty %}
-                No Copies Available
             {% endfor %}
             </tbody>
             </table>
+        {% else %}
+            <code>--== No Copies Available ==--</code>
+        {% endif %}
         </td>
     </tr>
     </table>
+    <div>
+        <hr>
+        {% if perms.catalog.change_book %}<a class="btn btn-default" href="{% url 'catalog:book-update' book.id %}">Update</a>{% endif %}
+        {% if perms.catalog.delete_book %}<a class="btn btn-danger" href="{% url 'catalog:book-delete' book.id %}">Delete</a>{% endif %}
+    </div>
 {% endblock %}

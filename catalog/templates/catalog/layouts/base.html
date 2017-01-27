@@ -12,7 +12,7 @@
         {% if user.is_staff %}
             <li>&nbsp;</li>
             <li><a href="{% url 'catalog:author-create' %}">Create Author</a></li>
-            <li><a href="{#% url 'catalog:book-create' %#}">Create Book</a></li>
+            <li><a href="{% url 'catalog:book-create' %}">Create Book</a></li>
             <li>&nbsp;</li>
             <li><a href="{% url 'admin:index' %}">Site Administration</a></li>
         {% endif %}

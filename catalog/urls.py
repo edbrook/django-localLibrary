@@ -8,6 +8,9 @@ urlpatterns = [
 
     url(r'^books/$', views.BookListView.as_view(), name="books-list"),
     url(r'^book/(?P<pk>\d{1,6})$', views.BookDetailView.as_view(), name="book-detail"),
+    url(r'^book/create$', views.BookCreate.as_view(), name='book-create'),
+    url(r'^book/(?P<pk>\d{1,6})/update$', views.BookUpdate.as_view(), name='book-update'),
+    url(r'^book/(?P<pk>\d{1,6})/delete$', views.BookDelete.as_view(), name='book-delete'),
     url(r'^book/(?P<pk>[-0-9a-f]{36})/renew$', views.renew_book_librarian, name="renew-book-librarian"),
 
     url(r'^authors/$', views.AuthorListView.as_view(), name="authors-list"),

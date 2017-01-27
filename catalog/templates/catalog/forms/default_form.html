@@ -1,7 +1,7 @@
 {% extends "catalog/layouts/base.html" %}
 
 {% block content %}
-    <h1>Create Author</h1>
+    <h1>{{ operation|default:"Create/Update" }} {{ object_type }}</h1>
     <form action="" method="post">
         {% csrf_token %}
         <table class="table">

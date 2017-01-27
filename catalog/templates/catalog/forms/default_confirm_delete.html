@@ -1,0 +1,11 @@
+{% extends "catalog/layouts/base.html" %}
+
+{% block content %}
+    <h1>Delete</h1>
+    <p>Are you sure you want to delete: <strong>{{ object }}</strong>?</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input class="btn btn-danger" type="submit" value="Yes, delete." />
+        <a class="btn btn-default" href="{{ back_url }}">Cancel</a>
+    </form>
+{% endblock %}

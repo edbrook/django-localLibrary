@@ -123,15 +123,73 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
     model = Author
     fields = '__all__'
     initial = {'date_of_birth': '24/02/1982'}
+    template_name = 'catalog/forms/default_form.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(AuthorCreate, self).get_context_data(**kwargs)
+        ctx['operation'] = 'Create'
+        ctx['object_type'] = 'Author'
+        return ctx
 
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'catalog.change_author'
     model = Author
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    template_name = 'catalog/forms/default_form.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(AuthorUpdate, self).get_context_data(**kwargs)
+        ctx['operation'] = 'Update'
+        ctx['object_type'] = 'Author'
+        return ctx
 
 
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'catalog.delete_author'
     model = Author
     success_url = reverse_lazy('catalog:authors-list')
+    template_name = 'catalog/forms/default_confirm_delete.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(AuthorDelete, self).get_context_data(**kwargs)
+        ctx['back_url'] = reverse_lazy('catalog:author-detail', kwargs={'pk': ctx['object'].id})
+        return ctx
+
+
+class BookCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'catalog.add_book'
+    model = Book
+    fields = '__all__'
+    template_name = 'catalog/forms/default_form.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(BookCreate, self).get_context_data(**kwargs)
+        ctx['operation'] = 'Create'
+        ctx['object_type'] = 'Book'
+        return ctx
+
+
+class BookUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'catalog.change_book'
+    model = Book
+    fields = '__all__'
+    template_name = 'catalog/forms/default_form.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(BookUpdate, self).get_context_data(**kwargs)
+        ctx['operation'] = 'Update'
+        ctx['object_type'] = 'Book'
+        return ctx
+
+
+class BookDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'catalog.delete_book'
+    model = Book
+    success_url = reverse_lazy('catalog:books-list')
+    template_name = 'catalog/forms/default_confirm_delete.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(BookDelete, self).get_context_data(**kwargs)
+        ctx['back_url'] = reverse_lazy('catalog:book-detail', kwargs={'pk': ctx['object'].id})
+        return ctx
