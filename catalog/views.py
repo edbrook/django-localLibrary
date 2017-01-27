@@ -5,10 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.db.models import Case, Count, When
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from .forms import RenewBookForm, RenewBookModelForm
+from .forms import RenewBookModelForm
 from .models import Author, Book, BookInstance, Genre
 
 
@@ -42,7 +42,6 @@ def renew_book_librarian(request, pk):
         return HttpResponseRedirect(reverse('catalog:all-loaned'))
 
     if request.method == 'POST':
-        # form = RenewBookForm(request.POST)
         form = RenewBookModelForm(request.POST)
 
         if form.is_valid():
@@ -52,7 +51,6 @@ def renew_book_librarian(request, pk):
 
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        # form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
         form = RenewBookModelForm(initial={'due_back': proposed_renewal_date})
 
     ctx = {'form': form, 'bookinst': book_inst}
@@ -118,3 +116,22 @@ class AllLoanedBooks(PermissionRequiredMixin, ListView):
         return BookInstance.objects\
             .filter(status__exact=BookInstance.ON_LOAN)\
             .order_by('due_back', 'borrower__id')
+
+
+class AuthorCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'catalog.add_author'
+    model = Author
+    fields = '__all__'
+    initial = {'date_of_birth': '24/02/1982'}
+
+
+class AuthorUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'catalog.change_author'
+    model = Author
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+
+
+class AuthorDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'catalog.delete_author'
+    model = Author
+    success_url = reverse_lazy('catalog:authors-list')

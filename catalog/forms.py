@@ -7,21 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from .models import BookInstance
 
 
-class RenewBookForm(forms.Form):
-    due_back = forms.DateField(label="Renewal date", help_text="Enter a date between now and 4 weeks (default 3).")
-
-    def clean_due_back(self):
-        data = self.cleaned_data['due_back']
-
-        if data < datetime.date.today():
-            raise ValidationError(_('Invalid date - date in past'))
-
-        if data > datetime.date.today() + datetime.timedelta(weeks=4):
-            raise ValidationError(_('Invalid date - over 4 weeks away'))
-
-        return data
-
-
 class RenewBookModelForm(forms.ModelForm):
     class Meta:
         model = BookInstance

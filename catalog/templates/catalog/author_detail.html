@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>{{ author.first_name }} {{ author.last_name }}</h1>
-    <h5>{{ author.date_of_birth }} - {{ author.date_of_death }}</h5>
+    <h5>{{ author.date_of_birth }} - {{ author.date_of_death|default_if_none:"..." }}</h5>
     <h2>Books</h2>
     {% for book in books %}
     <div class="indent">
@@ -22,4 +22,9 @@
     {% empty %}
         <p class="text-warning">No books!</p>
     {% endfor %}
+    <div>
+        <hr>
+        {% if perms.catalog.change_author %}<a class="btn btn-default" href="{% url 'catalog:author-update' author.id %}">Update</a>{% endif %}
+        {% if perms.catalog.delete_author %}<a class="btn btn-danger" href="{% url 'catalog:author-delete' author.id %}">Delete</a>{% endif %}
+    </div>
 {% endblock %}

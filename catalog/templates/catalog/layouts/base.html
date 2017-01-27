@@ -9,7 +9,13 @@
         <li>&nbsp;</li>
         <li><a href="{% url 'catalog:user-loaned' %}">My Books</a></li>
         {% if perms.catalog.can_mark_returned %}<li><a href="{% url 'catalog:all-loaned' %}">View All Loans</a></li>{% endif %}
-        {% if user.is_staff %}<li><a href="{% url 'admin:index' %}">Site Administration</a></li>{% endif %}
+        {% if user.is_staff %}
+            <li>&nbsp;</li>
+            <li><a href="{% url 'catalog:author-create' %}">Create Author</a></li>
+            <li><a href="{#% url 'catalog:book-create' %#}">Create Book</a></li>
+            <li>&nbsp;</li>
+            <li><a href="{% url 'admin:index' %}">Site Administration</a></li>
+        {% endif %}
         <li>&nbsp;</li>
         <li><a href="{% url 'logout' %}?next={% url 'catalog:index' %}">Logout</a></li>
     {% else %}
