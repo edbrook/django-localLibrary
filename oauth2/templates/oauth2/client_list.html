@@ -1,0 +1,26 @@
+{% extends "catalog/layouts/base.html" %}
+
+{% block title %}Your OAuth2 Clients{% endblock %}
+
+{% block content %}
+    <h1>OAuth Clients</h1>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Client ID</th>
+            <th>Redirect URL</th>
+        </tr>
+    </thead>
+    {% for client in client_list %}
+        <tr>
+            <td><a href="{{ client.get_absolute_url }}">{{ client.name }}</a></td>
+            <td>{{ client.id }}</td>
+            <td>{{ client.redirect_url }}</td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="3" class="text-center"><code>--== No oauth2 clients! ==--</code></td></tr>
+    {% endfor %}
+    </table>
+    <a href="{% url 'oauth2:register' %}" class="btn btn-primary">Register New App</a>
+{% endblock %}

@@ -8,6 +8,7 @@
     {% if user.is_authenticated %}
         <li>&nbsp;</li>
         <li><a href="{% url 'catalog:user-loaned' %}">My Books</a></li>
+        <li><a href="{% url 'oauth2:client-list' %}">OAuth2</a></li>
         {% if perms.catalog.can_mark_returned %}<li><a href="{% url 'catalog:all-loaned' %}">View All Loans</a></li>{% endif %}
         {% if user.is_staff %}
             <li>&nbsp;</li>
