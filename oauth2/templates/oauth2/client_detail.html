@@ -5,9 +5,9 @@
 {% block content %}
     <h1>{{ client.name }}</h1>
     <ul>
-    <li>Redirect URL: {{ client.redirect_url }}</li>
-    <li>ID: {{ client.id }}</li>
-    <li>Secret: {{ client.secret }}</li>
+        <li><strong>Client ID</strong>: <code>{{ client.id }}</code></li>
+        <li><strong>Secret</strong>: <code>{{ client.secret }}</code></li>
+        <li>Redirect URL: {{ client.redirect_url }}</li>
     </ul>
     <a href="{% url 'oauth2:client-list' %}">App List</a>
 {% endblock %}

@@ -1,8 +1,7 @@
 from django.conf.urls import url
+from .views import *
 
 app_name = 'oauth2'
-
-from .views import *
 
 urlpatterns = [
     # url(r'^authorise/', Authorise.as_view(), name='authorise'),
