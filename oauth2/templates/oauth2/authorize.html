@@ -3,9 +3,23 @@
 {% block title %}Application Authorisation Request{% endblock %}
 
 {% block content %}
-    APP_NAME
-    PERMISSIONS_REQUESTED
-    LOGO?
-    DESCRIPTION?
-    ALLOW / DENY buttons
+    <h1>Authorize Application</h1>
+    <div class="panel">
+        <div class="panel-heading">Allow access to your account?</div>
+        <div class="panel-body">
+            <h2>{{ client.name }}...</h2>
+            <div>
+                <p>...is requesting the following access to your account:</p>
+                <ul>
+                    <li>{{ scope }}</li>
+                </ul>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="btn btn-success">Allow</button>
+                    <button type="button" class="btn btn-danger">Deny</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
